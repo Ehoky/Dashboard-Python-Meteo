@@ -30,7 +30,7 @@ def get_meteo(latitude, longitude):
         
     return response.json()
     
-villes = lecture_json('villes.json', 'r')
+villes = lecture_json('villes.json', "r")
 
 meteo_actuelle_globale = []
 for ville in villes:
