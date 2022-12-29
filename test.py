@@ -1,43 +1,57 @@
 import json
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 # Base de l'url pour accéder aux données de l'API
 api_url = 'https://api.open-meteo.com/v1/forecast'
 
-# Latitude et longitudes obligatoires, à récupérer dans le csv.
-# Exemple : Paris
-latitude = 48.85
-longitude = 2.35
+num_departement = '93'
 
-
-def lecture_json(filename, mode):
-    try:
-        with open(filename, mode) as f:
-            cont_json = json.load(f)
-    except FileNotFoundError:
-        print("Fichier non trouvé")
-    except PermissionError:
-        print("Vous n'avez pas les droits")
-        
-    return cont_json
-
-
-def get_meteo(latitude, longitude):
+def get_cities_coordinates():
     # requête
-    response = requests.get(f'{api_url}?latitude={latitude}&longitude={longitude}&current_weather=true')
+    response = requests.get(f'https://geo.api.gouv.fr/departements/{num_departement}/communes?fields=nom,centre')
     if not response.ok:
-        print(f"Project -> Erreur de connexion {response.status_code} car '{response.reason}'")
-        
+        print(f"Erreur de connexion {response.status_code} car '{response.reason}'")
+    
     return response.json()
-    
-villes = lecture_json('villes.json', "r")
 
-meteo_actuelle_globale = []
-for ville in villes:
-    latitude_ville = ville['gps_lat']
-    longitude_ville = ville['gps_lng']
+
+def get_weather_for_coor(latitude, longitude):
+    # Ralentir la quantité d'appel à l'API pour éviter une erreur 'Max retries exceeded with url'
+    session = requests.Session()
+    retry = Retry(connect=3, backoff_factor=0.5)
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
     
-    meteo_actuelle_pour_ville = get_meteo(latitude_ville, longitude_ville)
-    #print(meteo_actuelle_pour_ville)
-    meteo_actuelle_globale.append(meteo_actuelle_pour_ville)
+    # requête
+    response = session.get(f'{api_url}?latitude={latitude}&longitude={longitude}&current_weather=true')
+    if not response.ok:
+        print(f"Erreur de connexion {response.status_code} car '{response.reason}'")
     
+    complete_response = response.json()
+    return complete_response['current_weather']
+
+
+def get_weather():
+    cities = get_cities_coordinates()
+    
+    current_weather = {'name':[], 'latitude':[], 'longitude':[], 'temperature':[], 'weathercode':[]}
+    for city in cities:
+        city_latitude = city['centre']['coordinates'][0]
+        city_longitude = city['centre']['coordinates'][1]
+        
+        # Latitude Longitude utilisés pour l'exemple
+        current_weather_for_city = get_weather_for_coor(city_latitude, city_longitude)
+        current_weather['name'].append(city['nom'])
+        current_weather['latitude'].append(city_latitude)
+        current_weather['longitude'].append(city_longitude)
+        current_weather['temperature'].append(current_weather_for_city['temperature'])
+        current_weather['weathercode'].append(current_weather_for_city['weathercode'])
+        # Enregistrement à modifier : faire des listes dans 1 dictionnaire unique
+        
+    return current_weather
+        
+
+#print(get_weather())
