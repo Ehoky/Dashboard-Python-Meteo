@@ -52,9 +52,9 @@ if __name__ == '__main__':
                             #     ]),
                             html.Div(
                                 dcc.Dropdown(
-                                    infos_dpt['name'],
+                                    infos_dpt['code'],
                                     id='dpt',
-                                    value=infos_dpt['code']
+                                    # value=infos_dpt['code']
                                 )
                             ),
                             html.Iframe(id='map',srcDoc=open('map.html','r').read(),width='100%',height='600' )                   
@@ -62,6 +62,7 @@ if __name__ == '__main__':
     ]
     )
     @app.callback(
+        Output(component_id='map',component_property='src'),
         Input(component_id='dpt',component_property='value')
         
     )
@@ -88,7 +89,7 @@ if __name__ == '__main__':
             ).add_to(map)
             
         map.save(outfile='map.html')
-        return map
+        return 'map.html'
     #
     # RUN APP
     #
