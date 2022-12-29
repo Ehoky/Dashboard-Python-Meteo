@@ -43,9 +43,11 @@ if __name__ == '__main__':
 
     app.layout = html.Div(children=[
 
-                            html.H1(children=f'Meteo ({year})',
+                            html.H1(children=f'Méteo ({year})',
                                         style={'textAlign': 'center', 'color': '#7FDBFF'}),
-                            html.Div(),
+                           
+                            html.Br(),
+                            html.Br(),
                             # html.Div([
                             #     "Numéro de département: ",
                             #     dcc.Input(id='num_depart', value='75', type='number')
@@ -54,42 +56,46 @@ if __name__ == '__main__':
                                 dcc.Dropdown(
                                     infos_dpt['code'],
                                     id='dpt',
-                                    # value=infos_dpt['code']
+                                    value=infos_dpt['code'][0]
                                 )
                             ),
-                            html.Iframe(id='map',srcDoc=open('map.html','r').read(),width='100%',height='600' )                   
+                            html.Br(),
+                            html.Br(),
+                            
+                            html.Iframe(id='map',srcDoc=open('map.html', 'r').read(),width='100%',height='600' )                   
 
     ]
     )
     @app.callback(
-        Output(component_id='map',component_property='src'),
+        Output(component_id='map',component_property='srcDoc'),
         Input(component_id='dpt',component_property='value')
         
     )
     def update_dpt(input):
+        n_dpt=str(input)
         get_cities_coordinates(input)
         print(input)
-        current_weather= get_weather()
+        current_weather= get_weather(input)
         cities=current_weather['name']
         lats=current_weather['latitude']
         longs=current_weather['longitude']
         temperature=current_weather['temperature']
 
-        map = folium.Map(location=(longs[0],lats[0]),tiles='OpenStreetMap', zoom_start=13)
+        map = folium.Map(location=(longs[0],lats[0]),tiles='OpenStreetMap', zoom_start=9)
         #zoom 13 pour voir la carte pour la view d'un departement, zoom 6 pour la carte view toute la france
 
         for i in range(len(cities)):
             folium.CircleMarker(
                 location = (longs[i],lats[i]),
-                radius = 15,
+                radius = 5,
                 color = 'crimson',
                 fill = True,
                 popup=temperature[i],
                 fill_color = 'crimson'
             ).add_to(map)
             
-        map.save(outfile='map.html')
-        return 'map.html'
+        map.save("map.html")
+        return open('map.html', 'r').read()
     #
     # RUN APP
     #

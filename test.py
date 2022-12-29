@@ -8,7 +8,6 @@ from urllib3.util.retry import Retry
 api_url = 'https://api.open-meteo.com/v1/forecast'
 
 
-
 def get_cities():
     response = requests.get(f'https://geo.api.gouv.fr/departements')
     if not response.ok:
@@ -43,8 +42,8 @@ def get_weather_for_coor(latitude, longitude):
     return complete_response['current_weather']
 
 
-def get_weather():
-    cities = get_cities_coordinates()
+def get_weather(n_dpt):
+    cities = get_cities_coordinates(n_dpt)
     
     current_weather = {'name':[], 'latitude':[], 'longitude':[], 'temperature':[], 'weathercode':[]}
     for city in cities:
