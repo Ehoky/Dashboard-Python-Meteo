@@ -3,12 +3,21 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+
 # Base de l'url pour accéder aux données de l'API
 api_url = 'https://api.open-meteo.com/v1/forecast'
 
-num_departement = '93'
 
-def get_cities_coordinates():
+
+def get_cities():
+    response = requests.get(f'https://geo.api.gouv.fr/departements')
+    if not response.ok:
+        print(f"Erreur de connexion {response.status_code} car '{response.reason}'")
+    
+    return response.json()
+
+
+def get_cities_coordinates(num_departement):
     # requête
     response = requests.get(f'https://geo.api.gouv.fr/departements/{num_departement}/communes?fields=nom,centre')
     if not response.ok:
