@@ -26,6 +26,7 @@ def get_map(weather):
     lats = weather['latitude']
     longs = weather['longitude']
     temperature = weather['temperature']
+    
 
     weather_map = folium.Map(location=(lats[0], longs[0]), tiles='OpenStreetMap', zoom_start=9)
     # zoom 13 pour voir la carte pour la view d'un departement, zoom 6 pour la carte view toute la france
