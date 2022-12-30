@@ -3,7 +3,7 @@
 Cet application contient un histogramme qui représente .... et une carte géographique qui représente la température en temps réel de tous les villes d'un departement.
 Et l'utilisateur peut choisir le département pour voir la température de tous les villes dans cette département. 
 
--Les données de météo viens du site :
+-Les données de météo viennent du site :
 https://open-meteo.com/en/docs#api_form
 
 -Les coordonnées géographiques viennent du site: https://geo.api.gouv.fr
