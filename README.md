@@ -52,10 +52,14 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
 ```mermaid 
 
     graph TD
-    main-->app;
-    app-->get_data_for_dashboard;
-    app-->trad_weather_code
+    main-->app.py;
+    app-->get_data_for_dashboard.py;
+    app-->trad_weather_code.py;
 
+    subgraph frontend
+        app.py
+    end
+    
     subgraph backend
         get_data_for_dashboard
         trad_weather_code
