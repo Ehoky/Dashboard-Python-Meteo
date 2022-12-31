@@ -1,4 +1,5 @@
 # Dashboard-Python-Meteo
+Auteur: Enora GERMOND & Qiaoqiao XIA
 
 ## User Guide
 
@@ -32,6 +33,7 @@ Et l'application se lance sur l'adresse suivant:
 
 http://127.0.0.1:8050/
 
+
 ### Rapport d'analyse
 
 Nous avons utilisé les données dynamiques via API, ce qui nous permet avoir les données de météo en temps réel. 
@@ -48,6 +50,7 @@ Je déclare sur l’honneur que le code fourni a été produit par nous-même.
 On a séparé notre programme en frontend(app.py) et backend(get_data_for_dashboard et trad_weather_code.py).
 Le fichier main.py appelle le frontend pour lancer tous les contenus de l'application. 
 Le backend est appelé par le frontend pour avoir tous les data que le frontend a besoin. 
+
 
 ### Architecture du code
 ```mermaid 
@@ -67,7 +70,7 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
     end
 ```
 
-#### Backend
+### Backend
 
 ##### get_data_for_dashboard.py
 
@@ -100,7 +103,7 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
     En paramètre, la fonction prends le dictionnaire de météo.
     Eb sortie, la fonction return une liste de type str qui indique la météo.
 
-#### Frontend 
+### Frontend 
 
 app.py a deux fonctions:
 
