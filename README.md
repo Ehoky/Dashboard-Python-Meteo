@@ -59,7 +59,7 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
     subgraph backend
         get_data_for_dashboard
         trad_weather_code
-    
+    end
 ```
 
 ### Frontend 
