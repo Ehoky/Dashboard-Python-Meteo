@@ -1,5 +1,4 @@
 # Dashboard-Python-Meteo
-Auteur: Enora GERMOND & Qiaoqiao XIA
 
 ## User Guide
 
@@ -33,7 +32,6 @@ Et l'application se lance sur l'adresse suivant:
 
 http://127.0.0.1:8050/
 
-
 ### Rapport d'analyse
 
 Nous avons utilisé les données dynamiques via API, ce qui nous permet avoir les données de météo en temps réel. 
@@ -50,7 +48,6 @@ Je déclare sur l’honneur que le code fourni a été produit par nous-même.
 On a séparé notre programme en frontend(app.py) et backend(get_data_for_dashboard et trad_weather_code.py).
 Le fichier main.py appelle le frontend pour lancer tous les contenus de l'application. 
 Le backend est appelé par le frontend pour avoir tous les data que le frontend a besoin. 
-
 
 ### Architecture du code
 ```mermaid 
@@ -70,50 +67,51 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
     end
 ```
 
-### Backend
+#### Backend
 
-##### get_data_for_dashboard.py
+##### 1.get_data_for_dashboard.py
 
-- get_departments():
+    - get_departments():
 
-    Avec cette fonction, on obtient une dictionaire qui contient une liste de nom de département et une liste de numéro département. 
+        Avec cette fonction, on obtient une dictionaire qui contient une liste de nom de département et une liste de numéro département. 
 
-- get_cities_coordinates(num_departement):
+    - get_cities_coordinates(num_departement):
 
-    En paramètre, l'utilisateur doit mettre le numéro de départment. 
-    En sortie, on obtient un type json qui contiens le longitude et latitude de tous les communes de la département.
+        En paramètre, l'utilisateur doit mettre le numéro de départment. 
+        En sortie, on obtient un type json qui contiens le longitude et latitude de tous les communes de la département.
 
-- get_weather_for_coor(latitude, longitude):
+    - get_weather_for_coor(latitude, longitude):
 
-    En paramètre, l'utilisateur doit mettre les coordonnées géographique(latitude, longitude).
-    En sortie, on aura la température et le code de météo. 
+        En paramètre, l'utilisateur doit mettre les coordonnées géographique(latitude, longitude).
+        En sortie, on aura la température et le code de météo. 
 
-- get_weather(num_departement):
+    - get_weather(num_departement):
 
-    En paramètre, l'utilisateur doit mettre le numéro de départment. 
-    En sortie, on obtient une dictionaire qui contient les listes comme 'nom' de département, le longtitude et le latitude pour ce département, la température et le code pour météo. 
+        En paramètre, l'utilisateur doit mettre le numéro de départment. 
+        En sortie, on obtient une dictionaire qui contient les listes comme 'nom' de département, le longtitude et le latitude pour ce département, la température et le code pour météo. 
 
 
 
-##### trad_weather_code.py
+##### 2.trad_weather_code.py
 
-- decode_weather(weather):
+    - decode_weather(weather):
 
-    Cette fonction nous permet de traduire le code de météo en texte lisible. 
-    En paramètre, la fonction prends le dictionnaire de météo.
-    Eb sortie, la fonction return une liste de type str qui indique la météo.
+        Cette fonction permet de traduire le code de météo en texte lisible. 
+        En paramètre, la fonction prends le dictionnaire de météo.
+        Eb sortie, la fonction return une liste de type str qui indique la météo.
 
-### Frontend 
+#### Frontend 
 
 app.py a deux fonctions:
 
 - get_map(weather):
 
+    Cette fonction permet de tracer les informations météo sur une carte géographique.
     En paramètre, la fonction prends le dictionnaire de météo.
     En sortie, la fonction return un type srcDoc pour le map.
 
 - get_histogram(weather):
-
+    Cette fonction permet de créer une histogramme qui représente le nombre de ville pour chaque température. 
     En paramètre, la fonction prends le dictionnaire de météo.
     En sortie, on obtient une figure de histogramme.
 
