@@ -4,8 +4,8 @@
 
 ### Description
 
-Cet application contient un histogramme qui représente le nombre de villes sur un température précis et une carte géographique qui représente la température en temps réel de tous les villes d'un departement.
-Et l'utilisateur peut choisir le département pour voir la température de tous les villes dans ce département. 
+Cet application contient un histogramme qui représente le nombre de villes sur un température précis et une carte géographique qui représente la température et le météo en temps réel de tous les villes d'un departement.
+Et l'utilisateur peut choisir le département pour voir la température de tous les villes dans ce département. Il faut cliquer pour voir la température, et le météo peut afficher quand le souris passe dessous d'un cercle.
 
 - Les données de météo viens du site :
 https://open-meteo.com/en/docs#api_form
@@ -25,6 +25,7 @@ Pour installer l’ensemble des dépendances nécessaires:
 ### Démarrage 
 
 Pour lancer cet application:
+
 ``$ python main.py``
 
 Et l'application se lance sur l'adresse suivant:
@@ -45,7 +46,7 @@ Je déclare sur l’honneur que le code fourni a été produit par nous-même.
 
 ## Developper Guide
 On a séparé notre programme en frontend(app.py) et backend(get_data_for_dashboard et trad_weather_code.py).
-Le fichier main.py appelle le frontend pour lancer tous les contenues de l'application. 
+Le fichier main.py appelle le frontend pour lancer tous les contenus de l'application. 
 Le backend est appelé par le frontend pour avoir tous les data que le frontend a besoin. 
 
 ### Architecture du code
@@ -66,33 +67,47 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
     end
 ```
 
-### Frontend 
-Le frontend a deux fonctions:
+#### Backend
+1. get_data_for_dashboard
+
+- get_departments():
+
+Avec cette fonction, on obtient une dictionaire qui contient une liste de nom de département et une liste de numéro département. 
+
+- get_cities_coordinates(num_departement):
+
+En paramètre, l'utilisateur doit mettre le numéro de départment. 
+En sortie, on obtient un type json qui contiens le longitude et latitude de tous les communes de la département.
+
+- get_weather_for_coor(latitude, longitude):
+
+En paramètre, l'utilisateur doit mettre les coordonnées géographique(latitude, longitude).
+En sortie, on aura la température et le code de météo. 
+
+- get_weather(num_departement):
+
+En paramètre, l'utilisateur doit mettre le numéro de départment. 
+En sortie, on obtient une dictionaire qui contient les listes comme 'nom' de département, le longtitude et le latitude pour ce département, la température et le code pour météo. 
+
+
+
+2. trad_weather_code
+
+- decode_weather(weather):
+
+Cette fonction nous permet de traduire le code de météo en texte lisible. 
+
+#### Frontend 
+
+app.py a deux fonctions:
+
 get_map(weather):
+
+
 get_histogram(weather):
+
 app.layout:
 
 app.callback:
 
-### Backend
-get_departments():
 
-get_cities_coordinates(num_departement):
-
-get_weather_for_coor(latitude, longitude):
-
-
-get_weather(num_departement):
-main appelle frontend, frontend
-backend a deux parties, trad_weather_code (decode_weather)
-get data liste departement, commune info, les météo sur les villes 
-
-
-Explication:
-### Architecture du code
-
--mermaid
-
--organigramme
-
--diagramme de classes (si il y a un département)
