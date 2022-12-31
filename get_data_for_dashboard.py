@@ -8,6 +8,7 @@ geo_api_url = 'https://geo.api.gouv.fr'
 
 
 def get_departments():
+    """Renvoie la liste des départements de la France métropolitaines et d'outre-mer"""
     response = requests.get(f'{geo_api_url}/departements')
     if not response.ok:
         print(f"Erreur de connexion {response.status_code} car '{response.reason}'")
@@ -22,6 +23,7 @@ def get_departments():
 
 
 def get_cities_coordinates(num_departement):
+    """Renvoie les données géographiques de toutes les communes du département en paramètre"""
     # requête
     response = requests.get(f'{geo_api_url}/departements/{num_departement}/communes?fields=nom,centre')
     if not response.ok:
@@ -31,6 +33,7 @@ def get_cities_coordinates(num_departement):
 
 
 def get_weather_for_coor(latitude, longitude):
+    """Renvoie les données météo pour les données géographiques en paramètres"""
     # Ralentir la quantité d'appel à l'API pour éviter une erreur 'Max retries exceeded with url'
     session = requests.Session()
     retry = Retry(connect=3, backoff_factor=0.5)
@@ -48,6 +51,7 @@ def get_weather_for_coor(latitude, longitude):
 
 
 def get_weather(num_departement):
+    """Renvoie la météo de toutes les villes du département entré en paramètre"""
     cities = get_cities_coordinates(num_departement)
 
     current_weather = {'name': [], 'latitude': [], 'longitude': [], 'temperature': [], 'weathercode': []}
