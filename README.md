@@ -44,7 +44,11 @@ On remarque la température dans un département est homogène.
 
 ### Copyright
 
-Je déclare sur l’honneur que le code fourni a été produit par nous-même.
+Je déclare sur l’honneur que le code fourni a été produit par moi/nous-même.
+
+Pour chaque ligne (ou groupe de lignes) empruntée, donner la référence de la source et une explication de la syntaxe utilisée.
+
+Toute ligne non déclarée est réputée être produite par l’auteur (ou les auteurs) du projet. L’absence ou l’omission de déclaration sera considéré comme du plagiat.
 
 
 
