@@ -61,8 +61,8 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
     end
 
     subgraph backend
-        get_data_for_dashboard
-        trad_weather_code
+        get_data_for_dashboard.py
+        trad_weather_code.py
     end
 ```
 
