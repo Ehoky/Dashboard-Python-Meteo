@@ -3,13 +3,18 @@ from dash import Input, Output
 import plotly.express as px
 import pandas as pd
 import folium
+import branca.colormap as cm
 
 from get_data_for_dashboard import get_weather, get_departments
 
 app = Dash(__name__)
 dpt_information = get_departments()
 first_value = get_weather('01')
-
+linear = cm.LinearColormap(
+    ['blue','yellow','orange', 'red'],
+    vmin=-40, vmax=40,
+    caption='Color Scale for Map' #Caption for Color scale or Legend
+)
 
 def get_histogram(weather):
     source_info = pd.DataFrame(weather)
@@ -49,22 +54,20 @@ def get_map(weather):
     longs = weather['longitude']
     temperature = weather['temperature']
     climate = decode_weather(weather)
-    
-
     weather_map = folium.Map(location=(lats[0], longs[0]), tiles='OpenStreetMap', zoom_start=9)
     # zoom 13 pour voir la carte pour la view d'un departement, zoom 6 pour la carte view toute la france
-
+    
     for i in range(len(cities)):
         folium.CircleMarker(
             location=(lats[i], longs[i]),
             radius=5,
-            color='crimson',
+            color=linear(temperature[i]),
             fill=True,
             tooltip=climate[i],
             popup=temperature[i],
-            fill_color='crimson'
+            fill_color=linear(temperature[i]),
         ).add_to(weather_map)
-
+    linear.add_to(weather_map)
     weather_map.save("map.html")
     return open('map.html', 'r').read()
 
@@ -72,9 +75,17 @@ def get_map(weather):
 app.layout = html.Div(children=[
     html.H1(children='Dashboard Météo',
             style={'textAlign': 'center', 'color': '#7FDBFF'}),
-
+    
+    html.Br(),
+    dcc.Graph(
+        id='histogram',
+        figure=get_histogram(first_value)
+    ),
+    html.Br(),
+    html.Br(),
+    
     html.Div(children='''
-        Ici vous pouvez trouver la température des villes de France en temps réel.
+        Ici vous pouvez trouver la température et le météo des villes de France en temps réel.
     '''),
 
     html.Div(
@@ -84,12 +95,8 @@ app.layout = html.Div(children=[
             value=dpt_information['code'][0]
         )
     ),
-
-    dcc.Graph(
-        id='histogram',
-        figure=get_histogram(first_value)
-    ),
-
+    html.Br(),
+    html.Br(),
     html.Iframe(id='map', srcDoc=get_map(first_value), width='100%', height='600')
 ])
 
