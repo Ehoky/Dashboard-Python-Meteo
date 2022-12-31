@@ -5,7 +5,7 @@
 ### Description
 
 Cet application contient un histogramme qui représente le nombre de villes sur un température précis et une carte géographique qui représente la température et le météo en temps réel de tous les villes d'un departement.
-Et l'utilisateur peut choisir le département pour voir la température de tous les villes dans ce département. Il faut cliquer pour voir la température, et le météo peut afficher quand le souris passe dessous d'un cercle.
+
 
 - Les données de météo viens du site :
 https://open-meteo.com/en/docs#api_form
@@ -31,6 +31,10 @@ Pour lancer cet application:
 Et l'application se lance sur l'adresse suivant:
 
 http://127.0.0.1:8050/
+
+### Utilisation
+Et l'utilisateur peut choisir le département pour voir la température de tous les villes dans ce département. Il faut cliquer pour voir la température, et le météo peut afficher quand le souris passe dessous d'un cercle.
+
 
 ### Rapport d'analyse
 
