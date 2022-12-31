@@ -20,12 +20,35 @@ def get_histogram(weather):
     fig.update_layout(yaxis_title_text='Nombre de villes')
     return fig
 
+def decode_weather(weather):
+    
+    weathercodes=weather['weathercode']
+    climate = []
+    for weathercode in weathercodes:
+        if weathercode ==0:
+            climate.append('Clair')
+        elif weathercode >=1 and weathercode<=3:
+            climate.append('Nuageux')
+        elif weathercode ==45 or weathercode ==48:
+            climate.append('Brouillard')
+        elif weathercode >=51 and weathercode<= 67:
+            climate.append('Pluie')
+        elif weathercode >=71 and weathercode <=77:
+            climate.append('Neige')
+        elif weathercode>=80 and weathercode<=82:
+            climate.append('Pluie')
+        elif weathercode==85 and weathercode== 86:
+            climate.append('Neige')
+        elif weathercode >90:
+            climate.append('Tempête')
+    return climate
 
 def get_map(weather):
     cities = weather['name']
     lats = weather['latitude']
     longs = weather['longitude']
     temperature = weather['temperature']
+    climate = decode_weather(weather)
     
 
     weather_map = folium.Map(location=(lats[0], longs[0]), tiles='OpenStreetMap', zoom_start=9)
@@ -37,6 +60,7 @@ def get_map(weather):
             radius=5,
             color='crimson',
             fill=True,
+            tooltip=climate[i],
             popup=temperature[i],
             fill_color='crimson'
         ).add_to(weather_map)
