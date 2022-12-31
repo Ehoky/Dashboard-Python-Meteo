@@ -68,46 +68,55 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
 ```
 
 #### Backend
-1. get_data_for_dashboard
+
+##### get_data_for_dashboard.py
 
 - get_departments():
 
-Avec cette fonction, on obtient une dictionaire qui contient une liste de nom de département et une liste de numéro département. 
+    Avec cette fonction, on obtient une dictionaire qui contient une liste de nom de département et une liste de numéro département. 
 
 - get_cities_coordinates(num_departement):
 
-En paramètre, l'utilisateur doit mettre le numéro de départment. 
-En sortie, on obtient un type json qui contiens le longitude et latitude de tous les communes de la département.
+    En paramètre, l'utilisateur doit mettre le numéro de départment. 
+    En sortie, on obtient un type json qui contiens le longitude et latitude de tous les communes de la département.
 
 - get_weather_for_coor(latitude, longitude):
 
-En paramètre, l'utilisateur doit mettre les coordonnées géographique(latitude, longitude).
-En sortie, on aura la température et le code de météo. 
+    En paramètre, l'utilisateur doit mettre les coordonnées géographique(latitude, longitude).
+    En sortie, on aura la température et le code de météo. 
 
 - get_weather(num_departement):
 
-En paramètre, l'utilisateur doit mettre le numéro de départment. 
-En sortie, on obtient une dictionaire qui contient les listes comme 'nom' de département, le longtitude et le latitude pour ce département, la température et le code pour météo. 
+    En paramètre, l'utilisateur doit mettre le numéro de départment. 
+    En sortie, on obtient une dictionaire qui contient les listes comme 'nom' de département, le longtitude et le latitude pour ce département, la température et le code pour météo. 
 
 
 
-2. trad_weather_code
+##### trad_weather_code.py
 
 - decode_weather(weather):
 
-Cette fonction nous permet de traduire le code de météo en texte lisible. 
+    Cette fonction nous permet de traduire le code de météo en texte lisible. 
+    En paramètre, la fonction prends le dictionnaire de météo.
+    Eb sortie, la fonction return une liste de type str qui indique la météo.
 
 #### Frontend 
 
 app.py a deux fonctions:
 
-get_map(weather):
+- get_map(weather):
 
+    En paramètre, la fonction prends le dictionnaire de météo.
+    En sortie, la fonction return un type srcDoc pour le map.
 
-get_histogram(weather):
+- get_histogram(weather):
 
-app.layout:
+    En paramètre, la fonction prends le dictionnaire de météo.
+    En sortie, on obtient une figure de histogramme.
 
-app.callback:
+- app.layout:
+    Ici, on a tous les component de notre dashboard.
 
+- app.callback:
+    Ici, on actualise les données si l'utilisateur a changé le numéro de département. 
 
