@@ -115,13 +115,16 @@ app.py a deux fonctions:
     En sortie, la fonction return un type srcDoc pour le map.
 
 - get_histogram(weather):
+
     Cette fonction permet de créer une histogramme qui représente le nombre de ville pour chaque température. 
     En paramètre, la fonction prends le dictionnaire de météo.
     En sortie, on obtient une figure de histogramme.
 
 - app.layout:
+
     Ici, on a tous les component de notre dashboard.
 
 - app.callback:
+
     Ici, on actualise les données si l'utilisateur a changé le numéro de département. 
 
