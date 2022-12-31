@@ -16,11 +16,11 @@ géographique qui représente les température et météo en temps réel de tout
 
 Pour cloner le projet
 
-``$ git clone git@github.com:Ehoky/Dashboard-Python-Meteo.git``
+``$ git clone https://github.com/Ehoky/Dashboard-Python-Meteo.git``
 
 Pour installer l’ensemble des dépendances nécessaires:
 
-``$ python -m pip install -r requirements.tx``
+``$ python -m pip install -r requirements.txt``
 
 ### Démarrage
 
