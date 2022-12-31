@@ -4,60 +4,67 @@
 
 ### Description
 
-Cet application contient un histogramme qui représente le nombre de villes sur un température précis et une carte géographique qui représente la température et le météo en temps réel de tous les villes d'un departement.
+Cet application contient un histogramme qui représente le nombre de villes en fonction de la température et une carte
+géographique qui représente les température et météo en temps réel de toutes les villes d'un departement.
 
+- Les données météo proviennent du site :
+  https://open-meteo.com/en/docs#api_form
 
-- Les données de météo viens du site :
-https://open-meteo.com/en/docs#api_form
-
-- Les coordonnées géographiques viennent du site: https://geo.api.gouv.fr
+- Les coordonnées géographiques proviennent du site: https://geo.api.gouv.fr
 
 ### Installation
 
-Pour cloner le projet 
+Pour cloner le projet
 
-``git clone git@github.com:Ehoky/Dashboard-Python-Meteo.git``
+``$ git clone git@github.com:Ehoky/Dashboard-Python-Meteo.git``
 
 Pour installer l’ensemble des dépendances nécessaires:
 
 ``$ python -m pip install -r requirements.tx``
 
-### Démarrage 
+### Démarrage
 
-Pour lancer cet application:
+Pour lancer cette application:
 
 ``$ python main.py``
 
-Et l'application se lance sur l'adresse suivant:
+Et le dashboard se lance sur l'adresse suivante:
 
 http://127.0.0.1:8050/
 
-### Utilisation
-Et l'utilisateur peut choisir le département pour voir la température de tous les villes dans ce département. Il faut cliquer pour voir la température, et le météo peut afficher quand le souris passe dessous d'un cercle.
+**Notice** : Dû à la quantité de données à traiter, le lancement du programme et le chargement du dashboard sont longs.
+Notamment lors du changement de département.
 
+### Utilisation
+
+L'utilisateur peut choisir le département pour voir la température de toutes les communes de ce département.
+Sur la carte, la météo s'affiche en survol souris mais il faut cliquer sur la commune pour voir la température.
 
 ### Rapport d'analyse
 
-Nous avons utilisé les données dynamiques via API, ce qui nous permet avoir les données de météo en temps réel. 
-Cependant, le démarrage et l'update des données prends du temps, on a fait le choix d'affichier le météo d'un département, cela nous permet de ralentir les demandes à l'API météo pour éviter le bug et aussi pour gaganer un peu plus de temps.
-On remarque la température dans un département est homogène. 
+Nous avons utilisé des données dynamiques via 2 APIs, ce qui nous permet d'avoir les données météo en temps réel.
+
+Cependant, le démarrage et l'update des données prennent du temps.
+On a donc fait le choix d'afficher le météo d'un
+département.
+Cela nous permet de ralentir les demandes à l'API météo pour éviter des bugs sans que le temps de chargement soit trop grand.
+
+On remarque que la température dans un département est généralement homogène.
 
 ### Copyright
 
-Je déclare sur l’honneur que le code fourni a été produit par moi/nous-même.
-
-Pour chaque ligne (ou groupe de lignes) empruntée, donner la référence de la source et une explication de la syntaxe utilisée.
-
-Toute ligne non déclarée est réputée être produite par l’auteur (ou les auteurs) du projet. L’absence ou l’omission de déclaration sera considéré comme du plagiat.
-
-
+Je déclare sur l’honneur que le code fourni a été produit par nous-même.
 
 ## Developper Guide
-On a séparé notre programme en frontend(app.py) et backend(get_data_for_dashboard et trad_weather_code.py).
-Le fichier main.py appelle le frontend pour lancer tous les contenus de l'application. 
-Le backend est appelé par le frontend pour avoir tous les data que le frontend a besoin. 
+
+On a séparé notre programme en frontend (app.py) et backend(get_data_for_dashboard et trad_weather_code.py).
+Le fichier main.py appelle le frontend pour lancer tous les contenus de l'application.
+Le backend est appelé par le frontend pour avoir tous les data dont il a besoin pour fonctionner.
 
 ### Architecture du code
+
+#### Fichiers
+
 ```mermaid 
 
     graph TD
@@ -75,60 +82,74 @@ Le backend est appelé par le frontend pour avoir tous les data que le frontend 
     end
 ```
 
+#### Fonctions
+
+```mermaid 
+graph TD
+    A[Main] --> B(app.layout)
+    A --> F
+    B --> get_departments
+    F(app.callback) --> C[update]
+    C --> D
+    B -->|Histogram| D[get_histogram]
+    B -->|Map| E[get_map]
+    C --> E
+    E --> decode_weather
+
+    D --> H[get_weather]
+    E --> H
+    H --> get_cities_coordinates
+    H --> get_weather_for_coor
+``` 
+
 #### Backend
 
 ##### 1.get_data_for_dashboard.py
 
     - get_departments():
-
-        Avec cette fonction, on obtient une dictionaire qui contient une liste de nom de département et une liste de numéro département. 
+        Cette fonction renvoie un dictionnaire qui contient le nom des départements et leurs numéros associés. 
 
     - get_cities_coordinates(num_departement):
-
-        En paramètre, l'utilisateur doit mettre le numéro de départment. 
-        En sortie, on obtient un type json qui contiens le longitude et latitude de tous les communes de la département.
+        En paramètre, la fonction prend le numéro de départment. 
+        En sortie, on obtient un objet qui contient les coordonnées longitude et latitude de toutes les communes du département.
 
     - get_weather_for_coor(latitude, longitude):
-
-        En paramètre, l'utilisateur doit mettre les coordonnées géographique(latitude, longitude).
-        En sortie, on aura la température et le code de météo. 
+        En paramètre, la fonction prend les coordonnées géographique.
+        En sortie, on aura la température et le code météo correspondant aux coordonnées. 
 
     - get_weather(num_departement):
-
-        En paramètre, l'utilisateur doit mettre le numéro de départment. 
-        En sortie, on obtient une dictionaire qui contient les listes comme 'nom' de département, le longtitude et le latitude pour ce département, la température et le code pour météo. 
-
-
+        En paramètre, la fonction prend le numéro de départment (permet d'appeler get_cities_coordinates).
+        En sortie, on obtient un dictionnaire qui contient les données géographiques et météorologiques des communes du département. 
 
 ##### 2.trad_weather_code.py
 
     - decode_weather(weather):
 
-        Cette fonction permet de traduire le code de météo en texte lisible. 
-        En paramètre, la fonction prends le dictionnaire de météo.
-        Eb sortie, la fonction return une liste de type str qui indique la météo.
+        Cette fonction permet de traduire le code météo en texte lisible. 
+        En paramètre, la fonction prend le dictionnaire provenant de 'get_weather'.
+        En sortie, la fonction retourne une liste de mots qui indique la météo.
 
-#### Frontend 
+#### Frontend
 
 app.py a deux fonctions:
 
 - get_map(weather):
 
-    Cette fonction permet de tracer les informations météo sur une carte géographique.
-    En paramètre, la fonction prends le dictionnaire de météo.
-    En sortie, la fonction return un type srcDoc pour le map.
+  Cette fonction permet de tracer les informations météo sur une carte géographique.
+  En paramètre, la fonction prend le dictionnaire météo.
+  En sortie, la fonction retourne un type srcDoc.
 
 - get_histogram(weather):
 
-    Cette fonction permet de créer une histogramme qui représente le nombre de ville pour chaque température. 
-    En paramètre, la fonction prends le dictionnaire de météo.
-    En sortie, on obtient une figure de histogramme.
+  Cette fonction permet de créer un histogramme qui représente le nombre de ville pour chaque température.
+  En paramètre, la fonction prend le dictionnaire météo.
+  En sortie, on obtient une figure histogramme.
 
 - app.layout:
 
-    Ici, on a tous les component de notre dashboard.
+  Ici, on a tous les composants nécessaires à l'initialisation de notre dashboard.
 
 - app.callback:
 
-    Ici, on actualise les données si l'utilisateur a changé le numéro de département. 
+  Ici, on actualise les données si l'utilisateur a changé le numéro de département. 
 
