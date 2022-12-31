@@ -14,9 +14,12 @@ https://open-meteo.com/en/docs#api_form
 
 ### Installation
 
-Pour cloner le projet  
+Pour cloner le projet 
+
 ``git clone git@github.com:Ehoky/Dashboard-Python-Meteo.git``
+
 Pour installer l’ensemble des dépendances nécessaires:
+
 ``$ python -m pip install -r requirements.tx``
 
 ### Démarrage 
@@ -25,6 +28,7 @@ Pour lancer cet application:
 ``$ python main.py``
 
 Et l'application se lance sur l'adresse suivant:
+
 http://127.0.0.1:8050/
 
 ### Rapport d'analyse
@@ -45,7 +49,18 @@ Le fichier main.py appelle le frontend pour lancer tous les contenues de l'appli
 Le backend est appelé par le frontend pour avoir tous les data que le frontend a besoin. 
 
 ### Architecture du code
+```mermaid 
 
+    graph TD
+    main-->app;
+    app-->get_data_for_dashboard;
+    app-->trad_weather_code
+
+    subgraph backend
+        get_data_for_dashboard
+        trad_weather_code
+    
+```
 
 ### Frontend 
 Le frontend a deux fonctions:
